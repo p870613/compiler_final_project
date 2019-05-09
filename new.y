@@ -45,6 +45,7 @@
 		ast_node *else_exp;
 	};
 
+	/*function*/
 	typedef struct fun_node
 	{
 		int type;
@@ -52,18 +53,21 @@
 		ast_node *fun_body;
 	};
 
+	/*number*/
 	typedef struct num_node
 	{
 		int type;
 		int value;
 	};
 
+	/*bool*/
 	typedef struct bool_node
 	{
 		int type;
 		bool value;
 	};
 
+	/*variable*/
 	typedef struct variable
 	{
 		int type;
@@ -71,6 +75,7 @@
 		int value;
 	};
 
+	/*function arg*/
 	struct fun_argu
 	{
 		ast_node *value;
@@ -80,10 +85,10 @@
 	ast_node *travel(ast_node *node);
 	ast_node *logic_recursive(int type, ast_node *cur);
 	ast_node *find_define_id(ast_node *cur, char *name);
-	struct define_id store[100];
+	struct define_id store[100];//store define variable
 	int top = 0;
 	ast_node *head;
-
+	/*91 ~ 433 -> build parse tree*/
 	/*argu*/
 	ast_node *new_argu(ast_node *b, ast_node *c)
 	{
@@ -123,10 +128,9 @@
 		return a;
 	}
 	
+	/*to satisfy (1 2 3 +)*/
 	ast_node *exp_recursive(int type, ast_node *cur, ast_node *next )
 	{
-		
-		
 		ast_node *a = malloc(sizeof(ast_node));
 		a -> left = cur;
 		a -> right = next;
@@ -142,7 +146,6 @@
 		a -> type = type;
 		return a;
 	}
-	
 	
 	ast_node * new_pra_node(char *name)
 	{
@@ -203,6 +206,7 @@
 			
 		}
 	}
+
 	ast_node *equ_recursive(ast_node *cur)
 	{
 		struct num_node *l = (struct num_node*)travel(cur->left);
@@ -425,9 +429,9 @@
 		{ 	
 			return travel(body);
 		}
-		
 	}
 
+	/*start operation*/
 	ast_node *travel(ast_node *node)
 	{
 		int type = node->type;
@@ -673,7 +677,6 @@
 %token SEP
 %token PRINT_BOOL PRINT_NUM
 %token PRA_L PRA_R
-
 %type <ast> exp exp_recursive num_op logic_op
 %type <ast> plus minus multiply divide module
 %type <ast> great small equ 
